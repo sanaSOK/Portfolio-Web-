@@ -14,6 +14,55 @@
             scroll-behavior: smooth; /* Smooth scrolling for navigation */
             overflow-x: hidden; /* Prevent horizontal scroll */
         }
+        @keyframes photo-pulse {
+        0%, 100% {
+        box-shadow:
+        0 0 0 0 rgba(34,197,94,0.5),    /* Soft green inner */
+        0 0 0 12px rgba(34,197,94,0.15); /* Soft green outer */
+        }
+        50% {
+            box-shadow:
+            0 0 0 24px rgba(34,197,94,0),   /* Fade out outer */
+            0 0 0 0 rgba(34,197,94,0.3);    /* Slightly less inner */
+        }
+        }
+        .photo-pulse {
+        animation: photo-pulse 1.5s infinite;
+        transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .photo-pulse:hover {
+            transform: scale(1.1);
+        }
+        
+        /* ...existing code... */
+        body.dark {
+            background-color: #18181b;
+            color: #f3f4f6;
+        }
+        body.dark .bg-white { background-color: #23232a !important; }
+        body.dark .bg-gray-50 { background-color: #18181b !important; }
+        body.dark .bg-gray-100 { background-color: #23232a !important; }
+        body.dark .text-gray-700, 
+        body.dark .text-gray-800 { color: #e5e7eb !important; }
+        body.dark .text-blue-700 { color: #60a5fa !important; }
+        body.dark .shadow-lg, 
+        body.dark .shadow-md { box-shadow: 0 4px 24px rgba(0,0,0,0.7) !important; }
+        body.dark .bg-gradient-to-r { background: linear-gradient(to right, #23232a, #18181b) !important; }
+        body.dark .bg-gradient-to-br { background: linear-gradient(to bottom right, #23232a, #18181b) !important; }
+        body.dark input, 
+        body.dark textarea {
+            background: #23232a;
+            color: #f3f4f6;
+            border-color: #444;
+        }
+        body.dark input:focus, 
+        body.dark textarea:focus {
+            border-color: #60a5fa;
+        }
+        body.dark .message-box { background-color: #23232a !important; color: #f3f4f6 !important; }
+        body.dark .message-box.success { background-color: #166534 !important; }
+        body.dark .message-box.error { background-color: #7f1d1d !important; }
+        body.dark .rounded-full { border-color: #60a5fa !important; }
 
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -86,6 +135,18 @@
         .hamburger-icon.open span:nth-child(3) {
             transform: translateY(-8px) rotate(-45deg);
         }
+
+        #hero {
+        background: url('main.png') no-repeat center center;
+        background-size: cover;
+        background-blend-mode: overlay;
+        }
+        header {
+        background-color: #166534;
+        background: url('main.png') no-repeat center center;
+        background-size: cover;
+        background-blend-mode: overlay;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -95,18 +156,27 @@
         <span id="messageBoxIcon" class="message-box-icon"></span>
         <span id="messageBoxText"></span>
     </div>
-
+    
     <!-- Header & Navigation -->
-    <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 shadow-lg fixed w-full z-50">
+    <header class="bg-to-r from-blue-600 to-purple-700 text-white p-4 shadow-lg fixed w-full z-50">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="#hero" class="text-2xl font-bold rounded-md hover:text-gray-200 transition duration-300">SANA SOK</a>
             <div class="hidden md:flex space-x-6">
+                
                 <a href="#about" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">About</a>
                 <a href="#projects" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Projects</a>
                 <a href="#skills" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Skills</a>
                 <a href="#experience" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Experience</a>
                 <a href="#contact" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Contact</a>
             </div>
+            <!-- ...existing code... -->
+            <div class="hidden md:flex space-x-6">
+                <!-- ...your nav links... -->
+            </div>
+            <!-- Dark mode toggle button -->
+            <button id="darkModeToggle" class="ml-4 p-2 rounded-md bg-white bg-opacity-20 hover:bg-opacity-40 transition duration-200" title="Toggle dark mode">
+                <span id="darkModeIcon">🌙</span>
+            </button>
             <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="md:hidden focus:outline-none p-2 rounded-md">
                 <div class="hamburger-icon">
@@ -119,6 +189,7 @@
         <!-- Mobile Menu Overlay -->
         <div id="mobile-menu" class="md:hidden fixed inset-0 bg-gradient-to-br from-blue-600 to-purple-700 bg-opacity-95 transform -translate-x-full transition-transform duration-300 ease-in-out z-40">
             <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl">
+                
                 <a href="#about" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">About</a>
                 <a href="#projects" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Projects</a>
                 <a href="#skills" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Skills</a>
@@ -131,6 +202,7 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="relative h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white text-center p-4">
+            
             <div class="z-10 animate-fade-in">
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Hi, I'm <span class="text-yellow-300">Sana</span></h1>
                 <p class="text-2xl md:text-3xl font-light mb-8">Full stack Web Developer</p>
@@ -148,10 +220,10 @@
         <section id="about" class="py-20 bg-gray-100 p-4">
             <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/3 flex justify-center">
-                    <img src="sana.png" alt="Your Photo" class="rounded-full shadow-xl border-4 border-blue-300 w-64 h-64 object-cover">
+                    <img src="sana.png" alt="Your Photo" class="rounded-full shadow-xl border-4 border-blue-300 w-64 h-64 object-cover photo-pulse ">
                 </div>
                 <div class="md:w-2/3 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-6 text-blue-700">About Me</h2>
+                    <h2 class="text-4xl font-bold mb-6 text-black-700">About Me</h2>
                     <p class="text-lg leading-relaxed mb-4">
                         Hello! I'm <span class="font-semibold text-blue-600">Sana</span>, a dedicated web developer with a strong passion for creating beautiful, functional, and user-friendly web experiences. I specialize in front-end development, bringing ideas to life with clean code and modern design principles.
                     </p>
@@ -165,7 +237,7 @@
         <!-- Projects Section -->
         <section id="projects" class="py-20 bg-white p-4">
             <div class="container mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">My Projects</h2>
+                <h2 class="text-4xl font-bold text-center mb-12 text-black-700">My Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     <!-- Project Card 1 -->
                     <div class="bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
@@ -228,7 +300,7 @@
         <!-- Skills Section -->
         <section id="skills" class="py-20 bg-gray-100 p-4">
             <div class="container mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">My Skills</h2>
+                <h2 class="text-4xl font-bold text-center mb-12 text-black-700">My Skills</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                     <!-- Skill Item -->
                     <div class="bg-white p-6 rounded-xl shadow-md">
@@ -285,12 +357,12 @@
         <!-- Experience Section -->
         <section id="experience" class="py-20 bg-white p-4">
             <div class="container mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">Experience</h2>
+                <h2 class="text-4xl font-bold text-center mb-12 text-balck-700">Experience</h2>
                 <div class="max-w-3xl mx-auto space-y-10">
                     <!-- Experience Item 1 -->
-                    <div class="relative pl-8 border-l-4 border-blue-400">
-                        <div class="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
-                        <h3 class="text-2xl font-semibold text-purple-700 mb-1">Junior Web Developer</h3>
+                    <div class="relative pl-8 border-l-4 border-green-400">
+                        <div class="absolute -left-2 top-0 w-4 h-4 bg-green-600 rounded-full"></div>
+                        <h3 class="text-2xl font-semibold text-green-700 mb-1">Junior Web Developer</h3>
                         <p class="text-lg text-gray-700 mb-2">Tech Solutions Inc. | Jan 2023 - Present</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Developed and maintained responsive web applications using React.js and Node.js.</li>
@@ -301,9 +373,9 @@
                     </div>
 
                     <!-- Experience Item 2 -->
-                    <div class="relative pl-8 border-l-4 border-blue-400">
-                        <div class="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
-                        <h3 class="text-2xl font-semibold text-purple-700 mb-1">Freelance Web Designer</h3>
+                    <div class="relative pl-8 border-l-4 border-green-400">
+                        <div class="absolute -left-2 top-0 w-4 h-4 bg-green-600 rounded-full"></div>
+                        <h3 class="text-2xl font-semibold text-green-700 mb-1">Freelance Web Designer</h3>
                         <p class="text-lg text-gray-700 mb-2">Self-Employed | Mar 2022 - Dec 2022</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Designed and developed custom websites for small businesses and individuals.</li>
@@ -318,7 +390,7 @@
         <!-- Contact Section -->
         <section id="contact" class="py-20 bg-gray-100 p-4">
             <div class="container mx-auto max-w-2xl">
-                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">Get In Touch</h2>
+                <h2 class="text-4xl font-bold text-center mb-12 text-black-700">Get In Touch</h2>
                 <form id="contact-form" class="bg-white p-8 rounded-xl shadow-lg space-y-6">
                     <div>
                         <label for="name" class="block text-lg font-medium text-gray-700 mb-2">Name</label>
@@ -336,7 +408,7 @@
                         <label for="message" class="block text-lg font-medium text-gray-700 mb-2">Message</label>
                         <textarea id="message" name="message" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Type your message here..." required></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-700 text-white py-3 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-purple-800 transition duration-300 ease-in-out shadow-md hover:shadow-lg">Send Message</button>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-semibold transition duration-300 ease-in-out shadow-md hover:shadow-lg">Send Message</button>
                 </form>
             </div>
         </section>
@@ -345,29 +417,49 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 text-center">
         <div class="container mx-auto">
-            <p>&copy; 2025 Your Name. All rights reserved.</p>
+            <p>&copy; 2025 Sana. All rights reserved.</p>
             <div class="flex justify-center space-x-6 mt-4">
                 <!-- Social Media Icons (placeholders) -->
-                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                <a href="https://github.com/sanaSOK" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.499.09.679-.217.679-.481 0-.237-.008-.865-.013-1.701-2.722.592-3.29-1.34-3.29-1.34-.446-1.141-1.088-1.444-1.088-1.444-.889-.604.07-.593.07-.593.987.07 1.504 1.018 1.504 1.018.87 1.503 2.28 1.07 2.83.818.09-.637.343-1.07.626-1.312-2.178-.231-4.463-1.096-4.463-4.837 0-1.07.384-1.948 1.023-2.635-.103-.232-.444-1.25.098-2.618 0 0 .837-.264 2.75 1.004.79-.22 1.628-.329 2.479-.335.85.006 1.689.115 2.479.335 1.913-1.268 2.75-1.004 2.75-1.004.542 1.368.201 2.386.099 2.618.64.687 1.023 1.565 1.023 2.635 0 3.75-2.289 4.604-4.472 4.827.35.3.67.882.67 1.777 0 1.285-.012 2.324-.012 2.646 0 .267.179.576.688.48C20.137 20.198 23 16.442 23 12.017 23 6.484 18.522 2 12 2Z" clip-rule="evenodd" />
                     </svg>
                 </a>
-                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                <a href="https://instagram.com/Sana Sok" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M22 4.043a9.146 9.146 0 01-2.56.702 4.575 4.575 0 004-1.936 9.18 9.18 0 01-2.88 1.107A4.577 4.577 0 0015.02 2c-2.53 0-4.58 2.05-4.58 4.577 0 .358.04.704.118 1.033-3.805-.19-7.17-2.01-9.425-4.78A4.59 4.59 0 002 8.38c0 1.587.808 2.98 2.037 3.793a4.54 4.54 0 01-2.07-.57v.058c0 2.22 1.58 4.07 3.67 4.49-.38.103-.78.158-1.19.158-.29 0-.57-.028-.84-.08A4.58 4.58 0 007.8 19.46c-1.63 1.28-3.69 2.04-5.93 2.04-.38 0-.76-.022-1.13-.067a9.13 9.13 0 004.94 1.45c5.92 0 9.15-4.9 9.15-9.15 0-.14 0-.28-.008-.42A6.55 6.55 0 0022 4.043z" />
                     </svg>
                 </a>
-                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                
+                <a href="https://facebook.com/Sana Sok(사나)" target="_blank" class="text-gray-400 hover:text-white transition duration-300" aria-label="Facebook">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M20.9 2H3.1C2.5 2 2 2.5 2 3.1v17.8C2 21.5 2.5 22 3.1 22h17.8c.6 0 1.1-.5 1.1-1.1V3.1C22 2.5 21.5 2 20.9 2zM8 19.5H5V9h3v10.5zM6.5 7.75c-1.24 0-2.25-.99-2.25-2.25S5.26 3.25 6.5 3.25s2.25.99 2.25 2.25S7.74 7.75 6.5 7.75zM19.5 19.5h-3v-5c0-1.25-.75-2-1.75-2-1 0-1.75.75-1.75 2v5h-3V9h3v1.5c.5-.75 1.25-1.5 2.25-1.5 2 0 3.25 1.75 3.25 4.5v5.5z" clip-rule="evenodd" />
+                        <path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/>
                     </svg>
                 </a>
+            
             </div>
         </div>
     </footer>
 
     <script>
+        // ...existing code...
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+
+        // Load saved mode
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            darkModeIcon.textContent = '☀️';
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            darkModeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
         // Function to show custom message box
         function showMessageBox(message, type = 'success') {
             const messageBox = document.getElementById('messageBox');
