@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANA - Web Developer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for navigation */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Animated skill bar */
+        .skill-bar-fill {
+            width: 0%;
+            transition: width 1.5s ease-out;
+        }
+        .skill-bar-fill.animate {
+            width: var(--skill-width); /* Set by JS */
+        }
+
+        /* Custom message box styles */
+        .message-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message-box.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .message-box.error {
+            background-color: #f44336; /* Red for error */
+        }
+        .message-box-icon {
+            font-size: 24px;
+        }
+
+        /* Hamburger menu animation */
+        .hamburger-icon span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Message Box Container -->
+    <div id="messageBox" class="message-box">
+        <span id="messageBoxIcon" class="message-box-icon"></span>
+        <span id="messageBoxText"></span>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 shadow-lg fixed w-full z-50">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold rounded-md hover:text-gray-200 transition duration-300">SANA SOK</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#about" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">About</a>
+                <a href="#projects" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Projects</a>
+                <a href="#skills" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Skills</a>
+                <a href="#experience" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Experience</a>
+                <a href="#contact" class="hover:text-gray-200 transition duration-300 rounded-md py-1 px-3">Contact</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none p-2 rounded-md">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-gradient-to-br from-blue-600 to-purple-700 bg-opacity-95 transform -translate-x-full transition-transform duration-300 ease-in-out z-40">
+            <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl">
+                <a href="#about" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">About</a>
+                <a href="#projects" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Projects</a>
+                <a href="#skills" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Skills</a>
+                <a href="#experience" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Experience</a>
+                <a href="#contact" class="text-white hover:text-gray-200 transition duration-300" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white text-center p-4">
+            <div class="z-10 animate-fade-in">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Hi, I'm <span class="text-yellow-300">Sana</span></h1>
+                <p class="text-2xl md:text-3xl font-light mb-8">Full stack Web Developer</p>
+                <p class="text-2xl md:text-3xl font-light mb-8">Crafting beautiful, functional web experiences with modern technologies and clean code</p>
+                <a href="#projects" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 hover:scale-105 transition duration-300 ease-in-out">View My Work</a>
+            </div>
+            <!-- Simple background shapes for visual interest -->
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute w-64 h-64 bg-white bg-opacity-10 rounded-full -top-16 -left-16 animate-pulse-slow"></div>
+                <div class="absolute w-96 h-96 bg-white bg-opacity-10 rounded-full -bottom-32 -right-32 animate-pulse-slow delay-200"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-gray-100 p-4">
+            <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3 flex justify-center">
+                    <img src="sana.png" alt="Your Photo" class="rounded-full shadow-xl border-4 border-blue-300 w-64 h-64 object-cover">
+                </div>
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-6 text-blue-700">About Me</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        Hello! I'm <span class="font-semibold text-blue-600">Sana</span>, a dedicated web developer with a strong passion for creating beautiful, functional, and user-friendly web experiences. I specialize in front-end development, bringing ideas to life with clean code and modern design principles.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        My journey in web development began with a fascination for how websites are built and how they can impact users. I love solving complex problems and continuously learning new technologies to stay at the forefront of the industry. When I'm not coding, you can find me exploring new design trends or contributing to open-source projects.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-white p-4">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">My Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Project Card 1 -->
+                    <div class="bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+                        <img src="automata.png" alt="Project 1" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 text-purple-700">Automata Simulator</h3>
+                            <p class="text-gray-700 mb-4">An Automata Simulator is a software tool or web application that allows you to design, visualize, and simulate how automata (like DFAs, NFAs, Turing Machines, etc.) work on given inputs.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-200 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">React</span>
+                                <span class="bg-green-200 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Node.js</span>
+                                <span class="bg-yellow-200 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">MongoDB</span>
+                                <span class="bg-purple-200 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Tailwind CSS</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-300">Live Demo &rarr;</a>
+                                <a href="#" target="_blank" class="text-gray-600 hover:text-gray-800 font-medium transition duration-300">GitHub &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+                        <img src="ATM.png" alt="Project 2" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 text-purple-700">ATM Machine</h3>
+                            <p class="text-gray-700 mb-4">An ATM is a machine that allows bank customers to perform financial transactions without a human teller.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-red-200 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Vue.js</span>
+                                <span class="bg-blue-200 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Firebase</span>
+                                <span class="bg-indigo-200 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">CSS3</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-300">Live Demo &rarr;</a>
+                                <a href="#" target="_blank" class="text-gray-600 hover:text-gray-800 font-medium transition duration-300">GitHub &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+                        <img src="parking.png" alt="Project 3" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 text-purple-700">Parking Get System</h3>
+                            <p class="text-gray-700 mb-4">A responsive Parking Gate System (also called Parking Management System or Automated Parking System) is a combination of hardware and software used to control vehicle entry/exit, issue tickets or QR codes, and calculate parking fees. It is commonly used in malls, airports, offices, and public car parks.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-purple-200 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Next.js</span>
+                                <span class="bg-blue-200 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">GraphQL</span>
+                                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Prisma</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium transition duration-300">Live Demo &rarr;</a>
+                                <a href="#" target="_blank" class="text-gray-600 hover:text-gray-800 font-medium transition duration-300">GitHub &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-gray-100 p-4">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">My Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">HTML & CSS</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="95%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">95%</p>
+                    </div>
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">JavaScript (ES6+)</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="90%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">90%</p>
+                    </div>
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">React.js</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="85%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">85%</p>
+                    </div>
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">Node.js & Express.js</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="80%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">80%</p>
+                    </div>
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">Database (MongoDB, SQL)</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="75%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">75%</p>
+                    </div>
+                    <!-- Skill Item -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-600">Version Control (Git)</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="skill-bar-fill bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" data-skill-width="90%"></div>
+                        </div>
+                        <p class="text-right text-sm text-gray-600 mt-1">90%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 bg-white p-4">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">Experience</h2>
+                <div class="max-w-3xl mx-auto space-y-10">
+                    <!-- Experience Item 1 -->
+                    <div class="relative pl-8 border-l-4 border-blue-400">
+                        <div class="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 class="text-2xl font-semibold text-purple-700 mb-1">Junior Web Developer</h3>
+                        <p class="text-lg text-gray-700 mb-2">Tech Solutions Inc. | Jan 2023 - Present</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li>Developed and maintained responsive web applications using React.js and Node.js.</li>
+                            <li>Collaborated with design teams to implement user-friendly interfaces.</li>
+                            <li>Participated in code reviews and contributed to improving code quality.</li>
+                            <li>Integrated RESTful APIs and managed database interactions.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Experience Item 2 -->
+                    <div class="relative pl-8 border-l-4 border-blue-400">
+                        <div class="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 class="text-2xl font-semibold text-purple-700 mb-1">Freelance Web Designer</h3>
+                        <p class="text-lg text-gray-700 mb-2">Self-Employed | Mar 2022 - Dec 2022</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li>Designed and developed custom websites for small businesses and individuals.</li>
+                            <li>Managed client communication, project requirements, and delivery timelines.</li>
+                            <li>Utilized HTML, CSS, and JavaScript to create engaging web experiences.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-gray-100 p-4">
+            <div class="container mx-auto max-w-2xl">
+                <h2 class="text-4xl font-bold text-center mb-12 text-blue-700">Get In Touch</h2>
+                <form id="contact-form" class="bg-white p-8 rounded-xl shadow-lg space-y-6">
+                    <div>
+                        <label for="name" class="block text-lg font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Your Name" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="your.email@example.com" required>
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-lg font-medium text-gray-700 mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Regarding your portfolio..." required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-lg font-medium text-gray-700 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-700 text-white py-3 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-purple-800 transition duration-300 ease-in-out shadow-md hover:shadow-lg">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <div class="container mx-auto">
+            <p>&copy; 2025 Your Name. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <!-- Social Media Icons (placeholders) -->
+                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.499.09.679-.217.679-.481 0-.237-.008-.865-.013-1.701-2.722.592-3.29-1.34-3.29-1.34-.446-1.141-1.088-1.444-1.088-1.444-.889-.604.07-.593.07-.593.987.07 1.504 1.018 1.504 1.018.87 1.503 2.28 1.07 2.83.818.09-.637.343-1.07.626-1.312-2.178-.231-4.463-1.096-4.463-4.837 0-1.07.384-1.948 1.023-2.635-.103-.232-.444-1.25.098-2.618 0 0 .837-.264 2.75 1.004.79-.22 1.628-.329 2.479-.335.85.006 1.689.115 2.479.335 1.913-1.268 2.75-1.004 2.75-1.004.542 1.368.201 2.386.099 2.618.64.687 1.023 1.565 1.023 2.635 0 3.75-2.289 4.604-4.472 4.827.35.3.67.882.67 1.777 0 1.285-.012 2.324-.012 2.646 0 .267.179.576.688.48C20.137 20.198 23 16.442 23 12.017 23 6.484 18.522 2 12 2Z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22 4.043a9.146 9.146 0 01-2.56.702 4.575 4.575 0 004-1.936 9.18 9.18 0 01-2.88 1.107A4.577 4.577 0 0015.02 2c-2.53 0-4.58 2.05-4.58 4.577 0 .358.04.704.118 1.033-3.805-.19-7.17-2.01-9.425-4.78A4.59 4.59 0 002 8.38c0 1.587.808 2.98 2.037 3.793a4.54 4.54 0 01-2.07-.57v.058c0 2.22 1.58 4.07 3.67 4.49-.38.103-.78.158-1.19.158-.29 0-.57-.028-.84-.08A4.58 4.58 0 007.8 19.46c-1.63 1.28-3.69 2.04-5.93 2.04-.38 0-.76-.022-1.13-.067a9.13 9.13 0 004.94 1.45c5.92 0 9.15-4.9 9.15-9.15 0-.14 0-.28-.008-.42A6.55 6.55 0 0022 4.043z" />
+                    </svg>
+                </a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M20.9 2H3.1C2.5 2 2 2.5 2 3.1v17.8C2 21.5 2.5 22 3.1 22h17.8c.6 0 1.1-.5 1.1-1.1V3.1C22 2.5 21.5 2 20.9 2zM8 19.5H5V9h3v10.5zM6.5 7.75c-1.24 0-2.25-.99-2.25-2.25S5.26 3.25 6.5 3.25s2.25.99 2.25 2.25S7.74 7.75 6.5 7.75zM19.5 19.5h-3v-5c0-1.25-.75-2-1.75-2-1 0-1.75.75-1.75 2v5h-3V9h3v1.5c.5-.75 1.25-1.5 2.25-1.5 2 0 3.25 1.75 3.25 4.5v5.5z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to show custom message box
+        function showMessageBox(message, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            const messageBoxText = document.getElementById('messageBoxText');
+            const messageBoxIcon = document.getElementById('messageBoxIcon');
+
+            messageBoxText.textContent = message;
+            messageBox.classList.remove('success', 'error'); // Reset classes
+            messageBox.classList.add(type);
+
+            // Set icon based on type (using simple text for icons as FontAwesome CDN might not always load instantly)
+            if (type === 'success') {
+                messageBoxIcon.textContent = '✓'; // Checkmark
+                messageBox.style.backgroundColor = '#4CAF50';
+            } else if (type === 'error') {
+                messageBoxIcon.textContent = '✗'; // Cross
+                messageBox.style.backgroundColor = '#f44336';
+            } else {
+                messageBoxIcon.textContent = 'i'; // Info
+                messageBox.style.backgroundColor = '#2196F3';
+            }
+
+            messageBox.classList.add('show');
+
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = mobileMenuButton.querySelector('.hamburger-icon');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('-translate-x-full');
+            hamburgerIcon.classList.toggle('open');
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Skill bar animation using Intersection Observer
+        const skillBars = document.querySelectorAll('.skill-bar-fill');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const skillWidth = entry.target.dataset.skillWidth;
+                    entry.target.style.setProperty('--skill-width', skillWidth);
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
+
+        skillBars.forEach(bar => {
+            observer.observe(bar);
+        });
+
+        // Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Basic client-side validation
+            if (!name || !email || !subject || !message) {
+                showMessageBox('Please fill in all fields.', 'error');
+                return;
+            }
+
+            // Simple email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessageBox('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            // Simulate form submission (in a real app, you'd send this data to a backend)
+            console.log('Form Submitted:', { name, email, subject, message });
+            showMessageBox('Thank you for your message! I will get back to you soon.', 'success');
+
+            // Clear the form after successful submission
+            this.reset();
+        });
+    </script>
+</body>
+</html>
